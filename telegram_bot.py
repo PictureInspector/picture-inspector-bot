@@ -1,5 +1,9 @@
 from telegram import Update
 from telegram.ext import CallbackContext
+from io import BytesIO
+import json
+from requests_toolbelt.multipart.encoder import MultipartEncoder
+import requests
 import re
 
 
@@ -22,7 +26,15 @@ def start(update: Update, context: CallbackContext) -> None:
 
 
 def image_processing(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text("There should be a caption")
+    img = context.bot.get_file(update.message.photo[-1].file_id)
+    file_name = img['file_path'].split('/')[-1]
+    print(file_name)
+    f = BytesIO(img.download_as_bytearray())
+    file_bytes = bytearray(f.read())
+
+    response = requests.post('http://10.91.2.204:5000/api/v1/pictures', files={'image': (file_name, file_bytes)})
+    caption = json.loads(response.text)['caption']
+    update.message.reply_text(caption, reply_to_message_id=update.message.message_id)
 
 
 def login_handler(update: Update, context: CallbackContext) -> None:
