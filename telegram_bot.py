@@ -17,8 +17,20 @@ def args_checker(args):
 
 
 def help_command(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text("Lorem ipsum dolor sit amet, consectetur adipiscing elit,"
-                              " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ")
+    update.message.reply_text("Welcome to SSAD project PicTex by:\n\n"
+                              "Dinislam Gabitov\n"
+                              "Andreay Palaev\n"
+                              "Georgy Andryushenko\n"
+                              "Roman Nabuillin\n"
+                              "\n"
+                              "This bot generates caption for a image.\n"
+                              "\n"
+                              "Commands:\n\n"
+                              "/help - help message\n"
+                              "/create <login> <password> - create an account\n"
+                              "/login <login> <password> - login to account\n"
+                              "/history - view history\n"
+                              "Send image to receive a caption")
 
 
 def start(update: Update, context: CallbackContext) -> None:
