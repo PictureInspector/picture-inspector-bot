@@ -1,10 +1,13 @@
 from telegram import Update
 from telegram.ext import CallbackContext, Updater, CommandHandler, MessageHandler, Filters
 from io import BytesIO
+from dotenv import load_dotenv
 import json
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 import requests
 import re
+import os
+load_dotenv()
 
 
 # Main bot class
@@ -70,7 +73,7 @@ class PicTexBot:
         file_bytes = bytearray(f.read())
 
         # Send image to the server
-        SERVER_ADDR = "https://10.91.2.204:5000/api/v1/pictures"
+        SERVER_ADDR = os.getenv("SERVER_ADDR")
         response = requests.post(SERVER_ADDR, files={'image': (file_name, file_bytes)})
         # Receive caption from server
         caption = json.loads(response.text)['caption']
