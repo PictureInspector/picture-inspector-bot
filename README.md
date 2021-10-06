@@ -9,7 +9,7 @@ And [pip](https://pip.pypa.io/en/stable/installation/).
 ## Libraries installation
 Install all needed libraries using this command:
 ```shell script
-> pip install -r requirements.txt
+> pip3 install -r requirements.txt
 ```
 
 ## Setting up telegram bot token and server url
@@ -26,6 +26,6 @@ SERVER_ADDR=https://127.0.0.1:5000/api/v1/pictures
 
 # Running
 Write following command
-```shell
-> python main.py
+```shell script
+> python3 main.py
 ```
