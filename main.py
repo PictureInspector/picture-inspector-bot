@@ -1,14 +1,19 @@
 from telegram_bot import *
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater
+from telegram.ext import CommandHandler
+from telegram.ext import MessageHandler
+from telegram.ext import Filters
+from telegram.ext import CallbackQueryHandler
 from dotenv import load_dotenv
 import os
+load_dotenv()
 
 
-def main():
-    # Load environment variables
-    load_dotenv()
+if __name__ == '__main__':
+    
     # Get bot token from env
     TG_TOKEN = os.getenv('TG_TOKEN')
+    
     # Start the bot
     # Take token and create updater
     updater = Updater(TG_TOKEN)
@@ -18,13 +23,8 @@ def main():
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
     dispatcher.add_handler(MessageHandler(Filters.photo, image_processing))
-    dispatcher.add_handler(CommandHandler("login", login_handler))
-    dispatcher.add_handler(CommandHandler("create", create_profile_handler))
-    dispatcher.add_handler(CommandHandler("history", history_handler))
+    dispatcher.add_handler(MessageHandler(Filters.text, handle_text))
+    dispatcher.add_handler(CallbackQueryHandler(handle_callback))
 
     updater.start_polling()
     updater.idle()
-
-
-if __name__ == '__main__':
-    main()
