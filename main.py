@@ -1,4 +1,4 @@
-from telegram_bot import *
+from telegram_bot import start, help_command, image_processing, handle_text, handle_callback
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # Add methods to dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
-    dispatcher.add_handler(MessageHandler(Filters.photo, image_processing))
+    dispatcher.add_handler(MessageHandler(Filters.photo | Filters.document.category("image"), image_processing))
     dispatcher.add_handler(MessageHandler(Filters.text, handle_text))
     dispatcher.add_handler(CallbackQueryHandler(handle_callback))
 
