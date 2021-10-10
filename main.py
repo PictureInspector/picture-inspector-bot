@@ -1,4 +1,5 @@
-from telegram_bot import start, help_command, image_processing, handle_text, handle_callback
+from telegram_bot import start, help_command, image_processing
+from telegram_bot import handle_text, handle_callback
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler
@@ -6,6 +7,8 @@ from telegram.ext import Filters
 from telegram.ext import CallbackQueryHandler
 from dotenv import load_dotenv
 import os
+
+
 load_dotenv()
 
 

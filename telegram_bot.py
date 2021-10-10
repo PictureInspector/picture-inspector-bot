@@ -7,11 +7,17 @@ from dotenv import load_dotenv
 import json
 import requests
 import os
+
 load_dotenv()
 
 SERVER_ADDR = os.getenv("SERVER_ADDR")
 
+
 def handle_callback(update: Update, context: CallbackContext) -> None:
+    """
+    This method handles the user feedback. If a user presses either of  👍 👎
+    buttons, the feedback for the image caption will be sent to the server.
+    """
 
     callback_data_list = json.loads(update.callback_query.data)
     feedback = {
@@ -32,7 +38,6 @@ def handle_callback(update: Update, context: CallbackContext) -> None:
         )
         raise exc
 
-
     if response.ok:
         if response.text == 'already saved':
             callback_answer_text = "We've already got your feedback 😏"
@@ -48,27 +53,44 @@ def handle_callback(update: Update, context: CallbackContext) -> None:
 
 
 def handle_text(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text("No, you have to send an _image_", parse_mode='Markdown')
+    """
+    This function is triggered if a user sends any text message.
+    The bot will ask a user to send an image.
+    """
+    update.message.reply_text("No, you have to send an _image_",
+                              parse_mode='Markdown')
 
 
 def help_command(update: Update, context: CallbackContext) -> None:
+    """
+    This function will print
+    'Send an image to receive a text'
+    for the '\help' command.
+    """
     update.message.reply_text("Send an image to receive a text")
 
 
-# Method for /start command
 def start(update: Update, context: CallbackContext) -> None:
+    """
+    This function will be called for the 'start' command.
+    It duplicates the '\help' command.
+    """
     help_command(update, context)
 
 
-# Method if image was sent to the bot
 def image_processing(update: Update, context: CallbackContext) -> None:
+    """
+    This method is triggered when a user sends an image to the bot.
+    The image will be sent to the server for caption generating.
+    After that an image caption will be returned back to the user.
+    """
 
     # Get image from the bot
     img = context.bot.get_file(update.message.photo[-1].file_id)
     file_name = img['file_path'].split('/')[-1]
     f = BytesIO(img.download_as_bytearray())
     file_bytes = bytearray(f.read())
-    
+
     # Send image to the server
     try:
         response = requests.post(
@@ -87,7 +109,7 @@ def image_processing(update: Update, context: CallbackContext) -> None:
     image_url = json.loads(response.text)['imageURL']
     caption = json.loads(response.text)['caption']
 
-    # reply the user with the caption and the buttons to rate the caption
+    # Reply the user with the caption and the buttons to rate the caption
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=caption,
