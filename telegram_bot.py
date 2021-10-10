@@ -21,8 +21,9 @@ def handle_callback(update: Update, context: CallbackContext) -> None:
 
     try:
         response = requests.post(
-            f"http://{SERVER_ADDR}/api/v1/feedback",
-            data=feedback
+            f"https://{SERVER_ADDR}/api/v1/feedback",
+            data=feedback,
+            verify=False
         )
     except Exception as exc:
         context.bot.answer_callback_query(
@@ -71,8 +72,9 @@ def image_processing(update: Update, context: CallbackContext) -> None:
     # Send image to the server
     try:
         response = requests.post(
-            f"http://{SERVER_ADDR}/api/v1/pictures",
-            files={'image': (file_name, file_bytes)}
+            f"https://{SERVER_ADDR}/api/v1/pictures",
+            files={'image': (file_name, file_bytes)},
+            verify=False
         )
     except Exception as exc:
         context.bot.send_message(
