@@ -21,7 +21,7 @@ SERVER_ADDR=Url to server with neural network
 Example of .env file:
 ```text
 TG_TOKEN=0000000000:AAAaaaaaaaaaaa-AAAAAA-AAAaaaaaaaaa
-SERVER_ADDR=https://127.0.0.1:5000/api/v1/pictures
+SERVER_ADDR=127.0.0.1:5000
 ```
 
 # Running
