@@ -24,11 +24,12 @@ def handle_callback(update: Update, context: CallbackContext) -> None:
             f"http://{SERVER_ADDR}/api/v1/feedback",
             data=feedback
         )
-    except:
+    except Exception as exc:
         context.bot.answer_callback_query(
             callback_query_id=update.callback_query.id,
             text='Oops... Somehow we cannot save your feedback 😔'
         )
+        raise exc
 
 
     if response.ok:
@@ -73,12 +74,12 @@ def image_processing(update: Update, context: CallbackContext) -> None:
             f"http://{SERVER_ADDR}/api/v1/pictures",
             files={'image': (file_name, file_bytes)}
         )
-    except:
+    except Exception as exc:
         context.bot.send_message(
             chat_id=update.effective_chat.id,
             text="Couldn't process your image 😔\nPlease send the image again"
         )
-        raise Exception('failed to send the image')
+        raise exc
 
     # Receive caption from server
     image_url = json.loads(response.text)['imageURL']
