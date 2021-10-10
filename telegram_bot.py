@@ -23,7 +23,7 @@ def handle_callback(update: Update, context: CallbackContext) -> None:
         response = requests.post(
             f"https://{SERVER_ADDR}/api/v1/feedback",
             data=feedback,
-            verify=False
+            verify="./cert.pem"
         )
     except Exception as exc:
         context.bot.answer_callback_query(
@@ -74,7 +74,7 @@ def image_processing(update: Update, context: CallbackContext) -> None:
         response = requests.post(
             f"https://{SERVER_ADDR}/api/v1/pictures",
             files={'image': (file_name, file_bytes)},
-            verify=False
+            verify="./cert.pem"
         )
     except Exception as exc:
         context.bot.send_message(
