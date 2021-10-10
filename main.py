@@ -19,11 +19,13 @@ if __name__ == '__main__':
     updater = Updater(TG_TOKEN)
     dispatcher = updater.dispatcher
 
+    IMAGE_FILTER = Filters.photo | Filters.document.category("image")
+
     # Add methods to dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
-    dispatcher.add_handler(MessageHandler(Filters.photo | Filters.document.category("image"), image_processing))
-    dispatcher.add_handler(MessageHandler(Filters.text, handle_text))
+    dispatcher.add_handler(MessageHandler(IMAGE_FILTER, image_processing))
+    dispatcher.add_handler(MessageHandler(~IMAGE_FILTER, handle_text))
     dispatcher.add_handler(CallbackQueryHandler(handle_callback))
 
     updater.start_polling()
